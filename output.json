@@ -5,12 +5,12 @@
   },
   "outputs": [
     {
-      "id": "c8d8f30db9cc41e5957ff91af0edea9d",
+      "id": "f63bbfe2ce9c43a98772a394e7d398eb",
       "status": {
         "code": 10000,
         "description": "Ok"
       },
-      "created_at": "2017-12-06T03:52:32.725827062Z",
+      "created_at": "2017-12-06T23:42:04.442987830Z",
       "model": {
         "id": "aaa03c23b3724a16a56b629203edc62c",
         "name": "general-v1.3",
@@ -32,10 +32,10 @@
         "display_name": "General"
       },
       "input": {
-        "id": "bbe1b3288d404533b488ca1b0ad9374e",
+        "id": "f47f981f1d4949f0bf3f1ee4029cae68",
         "data": {
           "video": {
-            "url": "https://s3.amazonaws.com/clarifai-api/vid/prod/d922de9d16be4dd48e78f202c01bf409/f00d4ed077a94cbcb65682b403187456",
+            "url": "https://s3.amazonaws.com/clarifai-api/vid/prod/ba9c44149e8d4dffb804e07961804829/d5a214b434284232a5547bcbe1978a8e",
             "base64": "true"
           }
         }
@@ -18903,12 +18903,12 @@
     },
     "outputs": [
       {
-        "id": "c8d8f30db9cc41e5957ff91af0edea9d",
+        "id": "f63bbfe2ce9c43a98772a394e7d398eb",
         "status": {
           "code": 10000,
           "description": "Ok"
         },
-        "created_at": "2017-12-06T03:52:32.725827062Z",
+        "created_at": "2017-12-06T23:42:04.442987830Z",
         "model": {
           "id": "aaa03c23b3724a16a56b629203edc62c",
           "name": "general-v1.3",
@@ -18930,10 +18930,10 @@
           "display_name": "General"
         },
         "input": {
-          "id": "bbe1b3288d404533b488ca1b0ad9374e",
+          "id": "f47f981f1d4949f0bf3f1ee4029cae68",
           "data": {
             "video": {
-              "url": "https://s3.amazonaws.com/clarifai-api/vid/prod/d922de9d16be4dd48e78f202c01bf409/f00d4ed077a94cbcb65682b403187456",
+              "url": "https://s3.amazonaws.com/clarifai-api/vid/prod/ba9c44149e8d4dffb804e07961804829/d5a214b434284232a5547bcbe1978a8e",
               "base64": "true"
             }
           }

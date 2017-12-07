@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "clarifai": "^2.5.0"
+    "clarifai": "^2.5.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "video-stitch": "^1.4.0"
   }
 }

@@ -1,0 +1,9 @@
+{
+  "status": {
+    "code": 11006,
+    "description": "Account limits exceeded",
+    "details": "Request exceeds \"search and predict\" limit.",
+    "req_id": "a12d529848fd4e01b5da706fc1341e76"
+  },
+  "outputs": []
+}
