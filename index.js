@@ -1,5 +1,6 @@
 var ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
+var youtubedl = require("youtube-dl");
 
 //Web Server
 var express = require('express');
@@ -17,47 +18,58 @@ const app = new Clarifai.App({apiKey: 'ead1fd4f9b964b1fa661ca7943946b55'});
 var secondsThreshold = 2;
 var probabilityThreshold = 0.98;
 
-expressApp.get("/getClipsData/", function(getRequest, getResponse) {
-    // var chosenConcept = getRequest.params.userkeyword;
-    var keyConcepts;
-    fs.readFile("public/videos/sourceVideos/avengers.mp4", {
-        encoding: 'base64'
-    }, function(err, data) {
-        if (err) {
-            throw err;
-        }
-        console.log("file converted to base64");
-        var encodedVideo = {
-            base64: data
-        }
-        // if(false){
-        app.models.predict(Clarifai.GENERAL_MODEL, encodedVideo, {video: true}, max_concepts = 150).then(function(response) {
-            console.log("inside predict");
-            var res = JSON.stringify(response, null, 2);
-            fs.writeFile('public/output.json', res, function() {
-                console.log("response written");
-            });
-            keyConcepts = findKeyConcepts(response);
-            getResponse.send(keyConcepts);
-            // makeWhatIfVideo(chosenConcept, keyConcepts);
-        }, function(err) {
-            console.log(err.data);
-            var res = JSON.stringify(err.data, null, 2);
-            fs.writeFile('error.json', res, function() {
-                console.log("error written");
-            });
-        }).catch(function(err) {
-            console.log("inside catch");
-            console.log(err);
-        })
-        // }
-        // else {
-        //   var message = {
-        //     "msg" : "skiping the prodict function"
-        //   }
-        // getResponse.send(message);
-        // }
-    });
+expressApp.get("/getClipsData/:url", function(getRequest, getResponse) {
+
+    var url = 'http://www.youtube.com/watch?v=' + getRequest.params.url;
+    var video = youtubedl(url, ['--format=18']);
+
+    video.pipe(fs.createWriteStream('public/videos/sourceVideos/1.mp4'));
+    video.on('info', function(info) {
+       console.log('Download started');
+       console.log('filename: ' + info._filename);
+       console.log('size: ' + info.size);
+   });
+   video.on('end', function() {
+     var keyConcepts;
+     fs.readFile("public/videos/sourceVideos/1.mp4", {
+         encoding: 'base64'
+     }, function(err, data) {
+         if (err) {
+             throw err;
+         }
+         console.log("file converted to base64");
+         var encodedVideo = {
+             base64: data
+         }
+         // if(false){
+         app.models.predict(Clarifai.GENERAL_MODEL, encodedVideo, {video: true}, max_concepts = 150).then(function(response) {
+             console.log("inside predict");
+             var res = JSON.stringify(response, null, 2);
+             fs.writeFile('public/output.json', res, function() {
+                 console.log("response written");
+             });
+             keyConcepts = findKeyConcepts(response);
+             getResponse.send(keyConcepts);
+             // makeWhatIfVideo(chosenConcept, keyConcepts);
+         }, function(err) {
+             console.log(err.data);
+             var res = JSON.stringify(err.data, null, 2);
+             fs.writeFile('error.json', res, function() {
+                 console.log("error written");
+             });
+         }).catch(function(err) {
+             console.log("inside catch");
+             console.log(err);
+         })
+         // }
+         // else {
+         //   var message = {
+         //     "msg" : "skiping the prodict function"
+         //   }
+         // getResponse.send(message);
+         // }
+     });
+   });
 });
 
 function findKeyConcepts(rawInput) {

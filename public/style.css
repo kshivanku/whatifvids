@@ -29,12 +29,12 @@ li {
 #objectOptions, #videoSection {
   display: inline-block;
   position: absolute;
+  height: calc(100vh - 60px);
 }
 
 #objectOptions {
   width: 200px;
   background-color: #f0f0f0;
-  height: 100vh;
   overflow: scroll;
 }
 
@@ -46,5 +46,12 @@ li {
 
 video {
   width: calc(100vw - 200px);
-  height: 100vh;
+}
+
+input {
+  width: 100vw;
+  height: 60px;
+  font-size: 24px;
+  outline: none;
+  padding-left: 16px;
 }

@@ -1,7 +1,46 @@
 {
   "status": {
     "code": 10020,
-    "description": "Gateway timeout",
-    "details": "Please try again or contact support@clarifai.com if the problem persists. code:2504"
-  }
+    "description": "Failure"
+  },
+  "outputs": [
+    {
+      "id": "ab047a5c63b845769eed22a71599b979",
+      "status": {
+        "code": 31104,
+        "description": "Input invalid argument",
+        "details": "Base 64 value too large. Max supported base64 size is 10485760MB. Send a smaller file or send a url link."
+      },
+      "created_at": "2017-12-09T22:50:09.361730054Z",
+      "model": {
+        "id": "aaa03c23b3724a16a56b629203edc62c",
+        "name": "general-v1.3",
+        "created_at": "2016-03-09T17:11:39.608845Z",
+        "app_id": "main",
+        "output_info": {
+          "message": "Show output_info with: GET /models/{model_id}/output_info",
+          "type": "concept",
+          "type_ext": "concept"
+        },
+        "model_version": {
+          "id": "aa9ca48295b37401f8af92ad1af0d91d",
+          "created_at": "2016-07-13T01:19:12.147644Z",
+          "status": {
+            "code": 21100,
+            "description": "Model trained successfully"
+          }
+        },
+        "display_name": "General"
+      },
+      "input": {
+        "id": "b68f7e24a31b491c9a474df6a313391e",
+        "data": {
+          "video": {
+            "base64": "true"
+          }
+        }
+      },
+      "data": {}
+    }
+  ]
 }

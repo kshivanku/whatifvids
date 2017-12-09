@@ -12,6 +12,7 @@
     "clarifai": "^2.5.0",
     "express": "^4.16.2",
     "fluent-ffmpeg": "^2.1.2",
-    "video-stitch": "^1.4.0"
+    "video-stitch": "^1.4.0",
+    "youtube-dl": "^1.12.2"
   }
 }
