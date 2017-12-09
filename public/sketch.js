@@ -2,22 +2,46 @@ var allTimeStampArray;
 var userkeyword;
 
 $(document).ready(function() {
-    $("form").submit(function(event) {
-        userkeyword = $("input").val();
-        if (false) {
-            $.get("/getClipsData/" + userkeyword, gotClipsData);
-        } else {
-            $.getJSON("concepts.json", function(json) {
-                console.log(json);
-                gotClipsData(json);
-            });
-        }
-        return false;
+    // $("form").submit(function(event) {
+    //     url = $("input").val();
+    //     if (false) {
+    //         $.get("/getClipsData/" + userkeyword, gotClipsData);
+    //     } else {
+    //         $.getJSON("concepts.json", function(json) {
+    //             console.log(json);
+    //             gotClipsData(json);
+    //         });
+    //     }
+    //     return false;
+    // })
+    $('body').on('click', '#objectOptions ul li', function(){
+
+      //Remove the entire video div and create a new one
+      $('#videoSection').remove();
+      var videoPlayerDiv = document.createElement("div");
+      videoPlayerDiv.id = "videoSection";
+      $('body').append(videoPlayerDiv);
+      $('#mainVideo').trigger('pause');
+
+      userkeyword = $(this).text();
+
+      $.getJSON("concepts.json", function(data) {
+        gotClipsData(data);
+      });
     })
-})
+    showObjectOptions();
+});
+
+function showObjectOptions(){
+  $.getJSON("concepts.json", function(data) {
+      var options = Object.keys(data);
+      for (var i = 0 ; i < options.length ; i++) {
+        $("#objectOptions ul").append("<li>"+ options[i] +"</li>")
+      }
+  });
+}
 
 function gotClipsData(data) {
-    console.log(data);
     allTimeStampArray = data;
     var formattedTimeStampArray = formatTimeStamp(userkeyword);
     var videoPath = '/videos/sourceVideos/avengers.mp4';
@@ -29,6 +53,7 @@ function gotClipsData(data) {
 }
 
 function formatTimeStamp(userkeyword) {
+    console.log("inside formatTimeStamp function");
     var userRequestedTimestamp = allTimeStampArray[userkeyword];
     var formattedTSArray = [];
     var startTime = 0;
@@ -57,21 +82,30 @@ function formatTimeStamp(userkeyword) {
 }
 
 function playVideo(formattedTimeStampArray, videoPath) {
+    console.log("inside playVideo");
     var formattedTimeStampArrayRunTime = formattedTimeStampArray.slice();
-    var videoStartTime;
-    var durationTime;
-    var videoPlayer = document.getElementById('mainVideo');
-    var source = document.createElement('source');
-    source.setAttribute('src', videoPath);
-    videoPlayer.appendChild(source);
+    var videoStartTime = null;
+    var durationTime = null;
 
-    videoPlayer.addEventListener("seeked", function() {
+    var videoPlayer = document.createElement("video");
+    videoPlayer.id = "mainVideo";
+    videoPlayer.src = videoPath;
+    videoPlayer.controls = true;
+    videoPlayer.pause();
+    videoPlayer.removeAttribute('autoplay');
+    var videoDomElement = document.getElementById("videoSection");
+    videoDomElement.appendChild(videoPlayer);
+
+    moveVideo();
+
+    videoPlayer.addEventListener('seeked', function() {
         videoPlayer.play();
     }, true);
 
-    videoPlayer.addEventListener('loadedmetadata', function() {
-        moveVideo();
-    }, false);
+    // videoPlayer.addEventListener('loadedmetadata', function() {
+    //     console.log("inside loadedmetadata");
+    //     moveVideo();
+    // }, false);
 
     videoPlayer.addEventListener('timeupdate', function() {
         var playedTime = this.currentTime - videoStartTime;
@@ -80,12 +114,12 @@ function playVideo(formattedTimeStampArray, videoPath) {
                 moveVideo();
             } else {
                 videoPlayer.pause();
-                formattedTimeStampArrayRunTime = formattedTimeStampArray.slice();
-                moveVideo();
-                console.log("repeat");
+                // formattedTimeStampArrayRunTime = formattedTimeStampArray.slice();
+                // moveVideo();
             }
         }
     });
+
     function moveVideo(){
       videoStartTime = formattedTimeStampArrayRunTime[0].startTime / 1000;
       durationTime = formattedTimeStampArrayRunTime[0].duration / 1000;
