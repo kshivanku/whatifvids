@@ -12,7 +12,7 @@ expressApp.use(express.static("public"));
 
 //CLARIFAI STUFF
 const Clarifai = require('clarifai');
-const app = new Clarifai.App({apiKey: 'ead1fd4f9b964b1fa661ca7943946b55'});
+const app = new Clarifai.App({apiKey: 'd23b62ccc2e84f40aff631fd024a7dfe'});
 
 //CODE STUFF
 var secondsThreshold = 2;

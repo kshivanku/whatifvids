@@ -1,46 +1,9 @@
 {
   "status": {
-    "code": 10020,
-    "description": "Failure"
+    "code": 11006,
+    "description": "Account limits exceeded",
+    "details": "Request exceeds \"search and predict\" limit.",
+    "req_id": "f625d458ff7a41569464f605a7ed0dfe"
   },
-  "outputs": [
-    {
-      "id": "d281f789796a4a3d8351b79494f68d0f",
-      "status": {
-        "code": 31104,
-        "description": "Input invalid argument",
-        "details": "Base 64 value too large. Max supported base64 size is 10485760MB. Send a smaller file or send a url link."
-      },
-      "created_at": "2017-12-09T23:28:13.741335284Z",
-      "model": {
-        "id": "aaa03c23b3724a16a56b629203edc62c",
-        "name": "general-v1.3",
-        "created_at": "2016-03-09T17:11:39.608845Z",
-        "app_id": "main",
-        "output_info": {
-          "message": "Show output_info with: GET /models/{model_id}/output_info",
-          "type": "concept",
-          "type_ext": "concept"
-        },
-        "model_version": {
-          "id": "aa9ca48295b37401f8af92ad1af0d91d",
-          "created_at": "2016-07-13T01:19:12.147644Z",
-          "status": {
-            "code": 21100,
-            "description": "Model trained successfully"
-          }
-        },
-        "display_name": "General"
-      },
-      "input": {
-        "id": "beb740ccc755476f95b5fb5200ebc852",
-        "data": {
-          "video": {
-            "base64": "true"
-          }
-        }
-      },
-      "data": {}
-    }
-  ]
+  "outputs": []
 }
