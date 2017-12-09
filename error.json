@@ -1,9 +1,7 @@
 {
   "status": {
-    "code": 11006,
-    "description": "Account limits exceeded",
-    "details": "Request exceeds \"search and predict\" limit.",
-    "req_id": "c7377218c67748cd976e2bf23fdc0a61"
-  },
-  "outputs": []
+    "code": 10020,
+    "description": "Gateway timeout",
+    "details": "Please try again or contact support@clarifai.com if the problem persists. code:2504"
+  }
 }

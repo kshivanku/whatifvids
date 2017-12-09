@@ -5,7 +5,8 @@ $(document).ready(function() {
     // $("form").submit(function(event) {
     //     url = $("input").val();
     //     if (false) {
-    //         $.get("/getClipsData/" + userkeyword, gotClipsData);
+    //         var userkeyword = "backlit";
+    //         $.get("/getClipsData/", gotClipsData);
     //     } else {
     //         $.getJSON("concepts.json", function(json) {
     //             console.log(json);
@@ -42,6 +43,7 @@ function showObjectOptions(){
 }
 
 function gotClipsData(data) {
+    console.log(data);
     allTimeStampArray = data;
     var formattedTimeStampArray = formatTimeStamp(userkeyword);
     var videoPath = '/videos/sourceVideos/avengers.mp4';

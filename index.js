@@ -11,14 +11,14 @@ expressApp.use(express.static("public"));
 
 //CLARIFAI STUFF
 const Clarifai = require('clarifai');
-const app = new Clarifai.App({apiKey: 'ebd30f02052e4bf88f5da518a604e59f'});
+const app = new Clarifai.App({apiKey: 'ead1fd4f9b964b1fa661ca7943946b55'});
 
 //CODE STUFF
 var secondsThreshold = 2;
-var probabilityThreshold = 0.950;
+var probabilityThreshold = 0.98;
 
-expressApp.get("/getClipsData/:userkeyword", function(getRequest, getResponse) {
-    var chosenConcept = getRequest.params.userkeyword;
+expressApp.get("/getClipsData/", function(getRequest, getResponse) {
+    // var chosenConcept = getRequest.params.userkeyword;
     var keyConcepts;
     fs.readFile("public/videos/sourceVideos/avengers.mp4", {
         encoding: 'base64'
@@ -31,7 +31,7 @@ expressApp.get("/getClipsData/:userkeyword", function(getRequest, getResponse) {
             base64: data
         }
         // if(false){
-        app.models.predict(Clarifai.GENERAL_MODEL, encodedVideo, {video: true}).then(function(response) {
+        app.models.predict(Clarifai.GENERAL_MODEL, encodedVideo, {video: true}, max_concepts = 150).then(function(response) {
             console.log("inside predict");
             var res = JSON.stringify(response, null, 2);
             fs.writeFile('public/output.json', res, function() {
