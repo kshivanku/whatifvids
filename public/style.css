@@ -16,6 +16,7 @@ body {
     color: #333333;
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
+    overflow: hidden;
 }
 
 li {
@@ -38,8 +39,7 @@ li {
   overflow: scroll;
 }
 
-#videoSection {
-  height: 100vh;
+#videoSection{
   background: #000;
   left: 200px;
 }

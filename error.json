@@ -5,13 +5,13 @@
   },
   "outputs": [
     {
-      "id": "ab047a5c63b845769eed22a71599b979",
+      "id": "d281f789796a4a3d8351b79494f68d0f",
       "status": {
         "code": 31104,
         "description": "Input invalid argument",
         "details": "Base 64 value too large. Max supported base64 size is 10485760MB. Send a smaller file or send a url link."
       },
-      "created_at": "2017-12-09T22:50:09.361730054Z",
+      "created_at": "2017-12-09T23:28:13.741335284Z",
       "model": {
         "id": "aaa03c23b3724a16a56b629203edc62c",
         "name": "general-v1.3",
@@ -33,7 +33,7 @@
         "display_name": "General"
       },
       "input": {
-        "id": "b68f7e24a31b491c9a474df6a313391e",
+        "id": "beb740ccc755476f95b5fb5200ebc852",
         "data": {
           "video": {
             "base64": "true"
