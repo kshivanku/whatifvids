@@ -28,25 +28,33 @@ expressApp.get("/getClipsData/:userkeyword", function(getRequest, getResponse) {
         var encodedVideo = {
             base64: data
         }
-        app.models.predict(Clarifai.GENERAL_MODEL, encodedVideo, {video: true}).then(function(response) {
-            console.log("inside predict");
-            var res = JSON.stringify(response, null, 2);
-            fs.writeFile('output.json', res, function() {
-                console.log("response written");
-            });
-            keyConcepts = findKeyConcepts(response);
-            getResponse.send(keyConcepts);
-            // makeWhatIfVideo(chosenConcept, keyConcepts);
-        }, function(err) {
-            console.log(err.data);
-            var res = JSON.stringify(err.data, null, 2);
-            fs.writeFile('error.json', res, function() {
-                console.log("error written");
-            });
-        }).catch(function(err) {
-            console.log("inside catch");
-            console.log(err);
-        })
+        if(false){
+          app.models.predict(Clarifai.GENERAL_MODEL, encodedVideo, {video: true}).then(function(response) {
+              console.log("inside predict");
+              var res = JSON.stringify(response, null, 2);
+              fs.writeFile('output.json', res, function() {
+                  console.log("response written");
+              });
+              keyConcepts = findKeyConcepts(response);
+              getResponse.send(keyConcepts);
+              // makeWhatIfVideo(chosenConcept, keyConcepts);
+          }, function(err) {
+              console.log(err.data);
+              var res = JSON.stringify(err.data, null, 2);
+              fs.writeFile('error.json', res, function() {
+                  console.log("error written");
+              });
+          }).catch(function(err) {
+              console.log("inside catch");
+              console.log(err);
+          })
+        }
+        else {
+          var message = {
+            "msg" : "skiping the prodict function"
+          }
+          getResponse.send(message);
+        }
     });
 });
 
