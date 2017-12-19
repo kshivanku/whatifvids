@@ -12,63 +12,68 @@ expressApp.use(express.static("public"));
 
 //CLARIFAI STUFF
 const Clarifai = require('clarifai');
-const app = new Clarifai.App({apiKey: 'd23b62ccc2e84f40aff631fd024a7dfe'});
+const app = new Clarifai.App({apiKey: 'b8c7a54feba2455c926bf77686956855'});
 
 //CODE STUFF
 var secondsThreshold = 2;
 var probabilityThreshold = 0.98;
 
 expressApp.get("/getClipsData/:url", function(getRequest, getResponse) {
-
-    var url = 'http://www.youtube.com/watch?v=' + getRequest.params.url;
-    var video = youtubedl(url, ['--format=18']);
-    var videoSize;
-    video.pipe(fs.createWriteStream('public/videos/sourceVideos/1.mp4'));
-    video.on('info', function(info) {
-        console.log('Download started');
-        console.log('filename: ' + info._filename);
-        console.log('size: ' + info.size);
-        videoSize = info.size / 1000000;
-    });
-    video.on('end', function() {
-        var keyConcepts;
-        if (videoSize < 10) {
-            fs.readFile("public/videos/sourceVideos/1.mp4", {
-                encoding: 'base64'
-            }, function(err, data) {
-                if (err) {
-                    throw err;
-                }
-                console.log("file converted to base64");
-                var encodedVideo = {
-                    base64: data
-                }
-                app.models.predict(Clarifai.GENERAL_MODEL, encodedVideo, {
-                    video: true
-                }, max_concepts = 150).then(function(response) {
-                    console.log("inside predict");
-                    var res = JSON.stringify(response, null, 2);
-                    fs.writeFile('public/output.json', res, function() {
-                        console.log("response written");
-                    });
-                    keyConcepts = findKeyConcepts(response);
-                    getResponse.send(keyConcepts);
-                    // makeWhatIfVideo(chosenConcept, keyConcepts);
-                }, function(err) {
-                    console.log(err.data);
-                    var res = JSON.stringify(err.data, null, 2);
-                    fs.writeFile('error.json', res, function() {
-                        console.log("error written");
-                    });
-                }).catch(function(err) {
-                    console.log("inside catch");
-                    console.log(err);
-                })
-            });
-        } else {
-            console.log("video too big");
-        }
-    });
+    if(getRequest.params.url == "fmf") {
+      var keyConcepts = JSON.parse(fs.readFileSync('public/allFMF.json'));
+      getResponse.send(keyConcepts);
+    }
+    else {
+      var url = 'http://www.youtube.com/watch?v=' + getRequest.params.url;
+      var video = youtubedl(url, ['--format=18']);
+      var videoSize;
+      video.pipe(fs.createWriteStream('public/videos/sourceVideos/1.mp4'));
+      video.on('info', function(info) {
+          console.log('Download started');
+          console.log('filename: ' + info._filename);
+          console.log('size: ' + info.size);
+          videoSize = info.size / 1000000;
+      });
+      video.on('end', function() {
+          var keyConcepts;
+          if (videoSize < 10) {
+              fs.readFile("public/videos/sourceVideos/1.mp4", {
+                  encoding: 'base64'
+              }, function(err, data) {
+                  if (err) {
+                      throw err;
+                  }
+                  console.log("file converted to base64");
+                  var encodedVideo = {
+                      base64: data
+                  }
+                  app.models.predict(Clarifai.GENERAL_MODEL, encodedVideo, {
+                      video: true
+                  }, max_concepts = 150).then(function(response) {
+                      console.log("inside predict");
+                      var res = JSON.stringify(response, null, 2);
+                      fs.writeFile('public/output.json', res, function() {
+                          console.log("response written");
+                      });
+                      keyConcepts = findKeyConcepts(response);
+                      getResponse.send(keyConcepts);
+                      // makeWhatIfVideo(chosenConcept, keyConcepts);
+                  }, function(err) {
+                      console.log(err.data);
+                      var res = JSON.stringify(err.data, null, 2);
+                      fs.writeFile('error.json', res, function() {
+                          console.log("error written");
+                      });
+                  }).catch(function(err) {
+                      console.log("inside catch");
+                      console.log(err);
+                  })
+              });
+          } else {
+              console.log("video too big");
+          }
+      });
+    }
 });
 
 function findKeyConcepts(rawInput) {

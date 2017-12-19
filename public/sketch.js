@@ -1,4 +1,5 @@
 var userkeyword;
+var movieSelected = false;
 var valid_url = /.*www\.youtube\.com\/watch\?v=\w+.*/;
 
 $(document).ready(function() {
@@ -10,11 +11,15 @@ $(document).ready(function() {
             url = $("input").val();
             $('#urlForm')[0].reset();
             if (valid_url.test(url)) {
+                movieSelected = false;
                 var id_start = url.indexOf("=");
                 var id = url.substring(id_start + 1, id_start + 12);
                 $.get("/getClipsData/" + id, gotClipsData);
+            } else if (url.toLowerCase() == "fmf") {
+                movieSelected = true;
+                $.get("/getClipsData/fmf", gotClipsData);
             } else {
-                console.log("invalid url");
+                console.log("video too large");
             }
         }
     });
@@ -29,7 +34,13 @@ $(document).ready(function() {
         $('#mainVideo').trigger('pause');
 
         userkeyword = $(this).text();
-        $.getJSON("concepts.json", function(data) {
+        if(movieSelected) {
+          var fileName = 'allFMF.json';
+        }
+        else {
+          var fileName = 'concepts.json';
+        }
+        $.getJSON(fileName, function(data) {
             gotClipsData(data);
         });
     })
@@ -40,7 +51,11 @@ function gotClipsData(data) {
     showObjectOptions();
     var allTimeStampArray = data;
     var formattedTimeStampArray = formatTimeStamp(allTimeStampArray, userkeyword);
-    var videoPath = '/videos/sourceVideos/1.mp4';
+    if (movieSelected) {
+        var videoPath = '/videos/sourceVideos/fmf.mp4';
+    } else {
+        var videoPath = '/videos/sourceVideos/1.mp4';
+    }
     if (formattedTimeStampArray) {
         playVideo(formattedTimeStampArray, videoPath);
     } else {
@@ -49,8 +64,15 @@ function gotClipsData(data) {
 }
 
 function showObjectOptions() {
+    console.log("in showObjectOptions");
     $("#objectOptions ul").empty();
-    $.getJSON("concepts.json", function(data) {
+    if(movieSelected) {
+      var fileName = 'allFMF.json';
+    }
+    else {
+      var fileName = 'concepts.json';
+    }
+    $.getJSON(fileName, function(data) {
         var options = Object.keys(data);
         for (var i = 0; i < options.length; i++) {
             $("#objectOptions ul").append("<li>" + options[i] + "</li>")
