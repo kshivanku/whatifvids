@@ -1,5 +1,5 @@
 var userkeyword;
-var movieSelected = false;
+var movieSelected = null;
 var valid_url = /.*www\.youtube\.com\/watch\?v=\w+.*/;
 
 $(document).ready(function() {
@@ -11,13 +11,16 @@ $(document).ready(function() {
             url = $("input").val();
             $('#urlForm')[0].reset();
             if (valid_url.test(url)) {
-                movieSelected = false;
+                movieSelected = null;
                 var id_start = url.indexOf("=");
                 var id = url.substring(id_start + 1, id_start + 12);
                 $.get("/getClipsData/" + id, gotClipsData);
             } else if (url.toLowerCase() == "fmf") {
-                movieSelected = true;
+                movieSelected = "fmf";
                 $.get("/getClipsData/fmf", gotClipsData);
+            } else if (url.toLowerCase() == "gwh") {
+                movieSelected = "gwh";
+                $.get("/getClipsData/gwh", gotClipsData);
             } else {
                 console.log("video too large");
             }
@@ -33,12 +36,14 @@ $(document).ready(function() {
         $('body').append(videoPlayerDiv);
         $('#mainVideo').trigger('pause');
 
-        userkeyword = $(this).text();
-        if(movieSelected) {
-          var fileName = 'allFMF.json';
-        }
-        else {
-          var fileName = 'concepts.json';
+        userkeyword = $(this).text().split(' (')[0];
+        console.log("userkeyword: " + userkeyword);
+        if (movieSelected == 'fmf') {
+            var fileName = 'allFMF.json';
+        } else if (movieSelected == 'gwh') {
+            var fileName = 'allGWH.json';
+        } else {
+            var fileName = 'concepts.json';
         }
         $.getJSON(fileName, function(data) {
             gotClipsData(data);
@@ -51,8 +56,10 @@ function gotClipsData(data) {
     showObjectOptions();
     var allTimeStampArray = data;
     var formattedTimeStampArray = formatTimeStamp(allTimeStampArray, userkeyword);
-    if (movieSelected) {
+    if (movieSelected == 'fmf') {
         var videoPath = '/videos/sourceVideos/fmf.mp4';
+    } else if (movieSelected == 'gwh') {
+        var videoPath = '/videos/sourceVideos/gwh.mp4';
     } else {
         var videoPath = '/videos/sourceVideos/1.mp4';
     }
@@ -66,16 +73,24 @@ function gotClipsData(data) {
 function showObjectOptions() {
     console.log("in showObjectOptions");
     $("#objectOptions ul").empty();
-    if(movieSelected) {
-      var fileName = 'allFMF.json';
-    }
-    else {
-      var fileName = 'concepts.json';
+    if (movieSelected == 'fmf') {
+        var fileName = 'allFMF.json';
+    } else if (movieSelected == 'gwh') {
+        var fileName = 'allGWH.json';
+    } else {
+        var fileName = 'concepts.json';
     }
     $.getJSON(fileName, function(data) {
-        var options = Object.keys(data);
-        for (var i = 0; i < options.length; i++) {
-            $("#objectOptions ul").append("<li>" + options[i] + "</li>")
+        var sortable = [];
+        for (var concept in data) {
+            sortable.push([concept, data[concept].length]);
+        }
+        sortable.sort(function(a, b) {
+            return b[1] - a[1];
+        });
+        // var options = Object.keys(data);
+        for (var i = 0; i < sortable.length; i++) {
+            $("#objectOptions ul").append("<li>" + sortable[i][0] + ' (' + sortable[i][1] + ')' + "</li>")
         }
     });
 }
